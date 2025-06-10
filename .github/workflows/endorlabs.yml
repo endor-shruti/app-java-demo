@@ -1,37 +1,41 @@
-name: Endor Labs - Java SCA Scan on Main Branch
+name: Endor Labs - Java SCA Scan on PRs
+
 on:
-  workflow_dispatch
-    
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
 jobs:
   scan-repo:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
       contents: read
+
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
 
-        - name: Checkout Repository
-          uses: actions/checkout@v3
-          
-        - name: Setup Java
-          uses: actions/setup-java@v4
-          with:
-            distribution: microsoft
-            java-version: "17"
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: microsoft
+          java-version: "17"
+          cache: maven
+          cache-dependency-path: pom.xml
 
-        - name: Compile Package
-          run: mvn clean install
-            
-        - name: Endor Labs SCA Scan
-          uses: endorlabs/github-action@main
-          with:
-            namespace: "shruti-learn.github"
-            api: "https://api.endorlabs.com"
-            pr: false
-            enable_github_action_token: true
-            scan_dependencies: true
-            # scan_secrets: true <-- Uncomment to enable secrets scanning
-            # scan_git_logs: true <-- Uncomment to scan git logs for committed secrets
-            # scan_github_actions: true <-- Uncomment to scan GH Action Vulnerabilities
-            # scan_tools: true <-- Uncomment to scan identified tools
-            additional_args: "--as-default-branch" # Additional parameters can be passed with whitespace separation, for example: --github to enable RSPM
+      - name: Compile Package
+        run: mvn clean install
+
+      - name: Endor Labs PR Scan
+        uses: endorlabs/github-action@main
+        with:
+          namespace: "shruti-learn.github"  # Replace with your actual namespace
+          api: "https://api.endorlabs.com"
+          pr: true
+          enable_github_action_token: true
+          scan_dependencies: true
+          # Optional additions:
+          # scan_secrets: true
+          # scan_git_logs: true
+          # scan_tools: true
