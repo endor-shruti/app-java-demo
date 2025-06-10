@@ -34,7 +34,6 @@ jobs:
             cache-dependency-path: pom.xml
             
         - name: Endor Labs SAST
-          if: ${{ github.event_name == 'pull_request' }}
           uses: endorlabs/github-action@main
           with:
             namespace: ${{ github.event.inputs.tenant_name }}
