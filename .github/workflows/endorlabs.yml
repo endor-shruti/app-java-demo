@@ -1,19 +1,7 @@
-name: Endor Labs Scan Test
+name: Endor Labs - Java SCA Scan on Main Branch
 on:
-  workflow_dispatch:
-    inputs:
-      api:
-        description: "Enter the target Endor Labs API"
-        required: true
-        type: choice
-        default: https://api.endorlabs.com
-        options:
-        - https://api.staging.endorlabs.com
-        - https://api.endorlabs.com
-      tenant_name:
-        description: "Enter your Endor Labs namespace?"
-        required: true
-        type: string
+  workflow_dispatch
+    
 jobs:
   scan-repo:
     runs-on: ubuntu-latest
@@ -30,30 +18,20 @@ jobs:
           with:
             distribution: microsoft
             java-version: "17"
-            cache: maven
-            cache-dependency-path: pom.xml
-            
-        - name: Endor Labs SAST
-          uses: endorlabs/github-action@main
-          with:
-            namespace: ${{ github.event.inputs.tenant_name }}
-            scan_summary_output_type: "table"
-            pr: "true"
-            enable_github_action_token: "true"
-            scan_dependencies: "true"
-            scan_sast: "true"
-            scan_git_logs: "true"
 
         - name: Compile Package
           run: mvn clean install
             
-        - name: Endor Labs Workflow Dispatch
+        - name: Endor Labs SCA Scan
           uses: endorlabs/github-action@main
           with:
-            namespace: ${{ github.event.inputs.tenant_name }}
-            scan_summary_output_type: "table"
-            pr: "true"
-            enable_github_action_token: "true"
-            scan_dependencies: "true"
-            scan_secrets: "true"
-            scan_git_logs: "true"
+            namespace: "shruti-learn.github"
+            api: "https://api.endorlabs.com"
+            pr: false
+            enable_github_action_token: true
+            scan_dependencies: true
+            # scan_secrets: true <-- Uncomment to enable secrets scanning
+            # scan_git_logs: true <-- Uncomment to scan git logs for committed secrets
+            # scan_github_actions: true <-- Uncomment to scan GH Action Vulnerabilities
+            # scan_tools: true <-- Uncomment to scan identified tools
+            additional_args: "--as-default-branch" # Additional parameters can be passed with whitespace separation, for example: --github to enable RSPM
