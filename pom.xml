@@ -72,6 +72,12 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+  <groupId>commons-collections</groupId>
+  <artifactId>commons-collections</artifactId>
+  <version>3.2.1</version>
+</dependency>
+
+    <dependency>
       <groupId>com.nqzero</groupId>
       <artifactId>permit-reflect</artifactId>
       <version>0.3</version>
