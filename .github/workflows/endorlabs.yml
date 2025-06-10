@@ -40,6 +40,7 @@ jobs:
             namespace: ${{ github.event.inputs.tenant_name }}
             scan_summary_output_type: "table"
             pr: "true"
+            enable_pr_comments: "true"
             enable_github_action_token: "true"
             scan_dependencies: "false"
             scan_sast: "true"
