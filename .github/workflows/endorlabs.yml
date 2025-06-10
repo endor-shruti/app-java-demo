@@ -27,7 +27,7 @@ jobs:
       if: github.event_name == 'pull_request'
       uses: endorlabs/github-action@v1 # Replace v1 with the commit SHA of the latest version of the GitHub Action for enhanced security
       with:
-        namespace: 'example' # Replace with your Endor Labs tenant namespace
+        namespace: 'shruti-learn.github' # Replace with your Endor Labs tenant namespace
         scan_dependencies: true
         scan_secrets: false
         pr: true
@@ -56,13 +56,9 @@ jobs:
       if: ${{ github.event_name == 'push' }}
       uses: endorlabs/github-action@v1 # Replace v1 with the commit SHA of the latest version of the GitHub Action for enhanced security
       with:
-        namespace: 'example' # Replace with your Endor Labs tenant namespace
+        namespace: 'shruti-learn.github' # Replace with your Endor Labs tenant namespace
         scan_dependencies: true
         scan_secrets: false
         pr: false
         scan_summary_output_type: 'table'
-        sarif_file: 'findings.sarif'
-    - name: Upload findings to github
-      uses: github/codeql-action/upload-sarif@v3
-      with:
         sarif_file: 'findings.sarif'
