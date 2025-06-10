@@ -49,7 +49,6 @@ jobs:
           run: mvn clean install
             
         - name: Endor Labs Workflow Dispatch
-          if: ${{ github.event_name == 'pull_request' }}
           uses: endorlabs/github-action@main
           with:
             namespace: ${{ github.event.inputs.tenant_name }}
