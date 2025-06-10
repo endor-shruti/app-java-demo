@@ -1,9 +1,8 @@
-name: Endor Labs Scan Test
+name: Endor Labs - Java SCA Scan on PRs
 
 on:
   pull_request:
     branches: [main]
-  workflow_dispatch:
 
 jobs:
   scan-repo:
@@ -28,17 +27,13 @@ jobs:
       - name: Compile Package
         run: mvn clean install
 
-      - name: Endor Labs Scan
-        if: ${{ github.event_name == 'pull_request' }}
+      - name: Endor Labs PR Scan
         uses: endorlabs/github-action@main
         with:
           namespace: "shruti-learn.github"
           api: "https://api.endorlabs.com"
+          pr: true
+          enable_github_action_token: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          scan_dependencies: true
           scan_summary_output_type: "table"
-          pr: "true"
-          enable_github_action_token: "true"
-          enable_pr_comments: "true"
-          scan_dependencies: "true"
-          scan_sast: "true"
-          scan_git_logs: "true"
-          scan_secrets: "false"
